@@ -34,12 +34,26 @@ if __name__ == "__main__":
     inputfile = open(sys.argv[2])
 
   strings = get_strings(inputfile)
+  validFlag = -1
   urls = [URL(x) for x in strings]
+  sourceDict = dict()
+  normalDict = dict()
+  for x in urls:
+    if sourceDict.has_key(x.url):
+      sourceDict[x.url]+=1
+    else:
+      sourceDict[x.url]=1
+    if normalDict.has_key(x.normalized):
+      normalDict[x.normalized]+=1
+    else:
+      normalDict[x.normalized]=1
+  validUrls = [x for x in urls if x.isValid()]
+  invalidUrls = [x for x in urls if not x.isValid()]
   if len(sys.argv) == 4:
     if sys.argv[1] == '--valid':
-      urls = [x for x in urls if x.isValid()]
+      validFlag = 1   
     else:
-      urls = [x for x in urls if not x.isValid()]
+      validFlag = 0
 
   algorithm_tuples = algorithms.GetAlgorithms()
   print 'Which sorting algorithm would you like?'
@@ -62,10 +76,22 @@ if __name__ == "__main__":
     outputfile = open(sys.argv[2], 'w+')
   else:
     outputfile = open(sys.argv[3], 'w+')
-  results = algorithms.RunAlgorithm(option, urls)
-  for item in results:
-    outputfile.write('%s\n' % item.url)
-
+  validResults = algorithms.RunAlgorithm(option, validUrls)
+  invalidResults = algorithms.RunAlgorithm(option, invalidUrls)
+  if validFlag == -1 or validFlag == 1:
+    for item in validResults:
+      outputfile.write('%s\n' % item.url)
+  if validFlag == -1 or validFlag == 0:
+    for item in invalidResults:
+      outputfile.write('%s\n' % item.url)
+  readOrderFile = open('ReadOrderFile.txt', 'w+'); 
+  for item in urls:
+    readOrderFile.write('Source: %s\n' % item.url)
+    readOrderFile.write('Valid: %s\n' % item.isValid())
+    readOrderFile.write('Canonical: %s\n' % item.normalized)
+    readOrderFile.write('Source unique : %s\n' % (sourceDict[item.url]==1))
+    readOrderFile.write('Canonicalized URL unique : %s\n\n' % (normalDict.has_key(item.normalized) and normalDict[item.normalized]==1))
   print 'Sorting with \'%s\' successfully.\n' %option
   inputfile.close()
   outputfile.close()
+  readOrderFile.close()
