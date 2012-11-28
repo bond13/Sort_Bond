@@ -121,20 +121,35 @@ class TestValidatorAndCanonicalizer(unittest.TestCase):
                        "http://127.0.0.1:80/",
                        "http://example.com:081/"]
 
-        self.assertEqual(URL(urls[0]).normalized, URL(urls[1]).normalized)
-        self.assertEqual(URL(urls[1]).normalized, URL(urls[2]).normalized)
-        self.assertEqual(URL(urls[2]).normalized, URL(urls[3]).normalized)
-        self.assertEqual(URL(urls[3]).normalized, URL(urls[0]).normalized)
+        self.assertTrue(URL(urls[0]).__eq__(URL(urls[1])))
+        self.assertTrue(URL(urls[1]).__eq__(URL(urls[2])))
+        self.assertTrue(URL(urls[2]).__eq__(URL(urls[3])))
+        self.assertTrue(URL(urls[3]).__eq__(URL(urls[0])))
 
-        self.assertGreater(URL(urls[13]).normalized, URL(urls[2]).normalized)
-        self.assertGreater(URL(urls[9]).normalized, URL(urls[7]).normalized)
-        self.assertGreater(URL(urls[5]).normalized, URL(urls[8]).normalized)
-        self.assertGreater(URL(urls[13]).normalized, URL(urls[0]).normalized)
+        self.assertTrue(URL(urls[13]).__gt__(URL(urls[2])))
+        self.assertTrue(URL(urls[9]).__gt__(URL(urls[7])))
+        self.assertTrue(URL(urls[5]).__gt__(URL(urls[8])))
+        self.assertTrue(URL(urls[13]).__gt__(URL(urls[0])))
 
-        self.assertLess(URL(urls[12]).normalized, URL(urls[1]).normalized)
-        self.assertLess(URL(urls[7]).normalized, URL(urls[9]).normalized)
-        self.assertLess(URL(urls[7]).normalized, URL(urls[6]).normalized)
-        self.assertLess(URL(urls[8]).normalized, URL(urls[5]).normalized)
+        self.assertTrue(URL(urls[12]).__lt__(URL(urls[1])))
+        self.assertTrue(URL(urls[7]).__lt__(URL(urls[9])))
+        self.assertTrue(URL(urls[7]).__lt__(URL(urls[6])))
+        self.assertTrue(URL(urls[8]).__lt__(URL(urls[5])))
+
+        self.assertFalse(URL(urls[0]).__gt__(URL(urls[1])))
+        self.assertFalse(URL(urls[1]).__lt__(URL(urls[2])))
+        self.assertFalse(URL(urls[2]).__gt__(URL(urls[3])))
+        self.assertFalse(URL(urls[3]).__lt__(URL(urls[0])))
+
+        self.assertTrue(URL(urls[13]).__ge__(URL(urls[2])))
+        self.assertTrue(URL(urls[9]).__ge__(URL(urls[7])))
+        self.assertFalse(URL(urls[5]).__lt__(URL(urls[8])))
+        self.assertFalse(URL(urls[13]).__lt__(URL(urls[0])))
+
+        self.assertTrue(URL(urls[12]).__le__(URL(urls[1])))
+        self.assertTrue(URL(urls[7]).__le__(URL(urls[9])))
+        self.assertFalse(URL(urls[7]).__gt__(URL(urls[6])))
+        self.assertFalse(URL(urls[8]).__gt__(URL(urls[5])))
 
 if __name__ == '__main__':
     unittest.main()

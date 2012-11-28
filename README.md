@@ -23,17 +23,19 @@ and 1 url will be printed per line in the output file (same as before).
 If the valid flag is set, only the valid URLs will be sorted and printed
 in the given output file. This is the same if the invalid flag is set, only 
 the invalid URLs will be sorted and printed in the output file. For both
-valid and invalid, the URLs will be sorted on their canonicalized form. The 
-sort algorithms use the standard string operators <, >, and == on the 
-canonicalized form. If neither flag is set, the valid URLs will be sorted
-and printed to the output file followed by the invalid URLs sorted and printed
-after the valid ones. The implementation in main simply separates the 
-valid and invalid URLs first before sorting/printingg them in the end, so they
-were sorted separately. I thought this created less checks and simplified
-the python by manually doing the first part of the sort and using python
-for the string comparisons. With my limited python skills, this was quicker
-and worked better for this particular assignment, but full comparators
-are implemented for our URL objects (which was done earlier by Chee Wei).
+valid and invalid, the URLs will be sorted on their canonicalized form as
+shown in the comparator code. The sort algorithms use the standard
+string operators <, >, and == on the canonicalized form. If neither
+flag is set, the valid URLs will be sorted and printed to the output file
+followed by the invalid URLs sorted and printed after the valid ones. 
+The implementation for sorting in main simply separates the valid and
+invalid URLs first before sorting/printing them in the end, instead of
+using the implemented comparators. With my limited python skills, this was
+easier to do because I was already checking the validity for each url. 
+Using the comparators would have been doing extra validity checks. 
+But full comparators (__eq__, __lt__, __le__, __gt__ and __ge__)
+are implemented for our URL objects (which was done earlier by Chee Wei)
+following the validity first, normalized string comparison second rule.
 
 The  main program automically prints all the URLs in read-order to standard out.
 This included the source url, whether it is valid, its canonicalized form,
@@ -57,9 +59,9 @@ our list of rules for invalid urls to ensure invalid URLs are properly
 identified as well. This same approach was taken for the canonicalizer tests
 since our definitions of valid and normal are strongly coupled. I tested
 both URLs already in their canonical form as wel as each of the various rules
-our canonicalizer addresses to see if that is done correctly. Since the
-comparators are simply the string comparitors I used the default less, greater,
-and equal functions on various canonicalized URLs just like my program does.
+our canonicalizer addresses to see if that is done correctly. The comparitors
+__eq__, __lt__, __gt__, __ge__ and __le__ are tested as well. This ensures
+the comparitors work incase I placed them into the sort implementation as well.
 I tested almost all of the important cases our canonicalizer addresses to
 ensure main.py is outputing the correct information.
 
