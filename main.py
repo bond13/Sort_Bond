@@ -83,15 +83,13 @@ if __name__ == "__main__":
       outputfile.write('%s\n' % item.url)
   if validFlag == -1 or validFlag == 0:
     for item in invalidResults:
-      outputfile.write('%s\n' % item.url)
-  readOrderFile = open('ReadOrderFile.txt', 'w+'); 
+      outputfile.write('%s\n' % item.url) 
   for item in urls:
-    readOrderFile.write('Source: %s\n' % item.url)
-    readOrderFile.write('Valid: %s\n' % item.isValid())
-    readOrderFile.write('Canonical: %s\n' % item.normalized)
-    readOrderFile.write('Source unique : %s\n' % (sourceDict[item.url]==1))
-    readOrderFile.write('Canonicalized URL unique : %s\n\n' % (normalDict.has_key(item.normalized) and normalDict[item.normalized]==1))
+    print ('Source: %s' % item.url)
+    print ('Valid: %s' % item.isValid())
+    print ('Canonical: %s' % item.normalized)
+    print ('Source unique : %s' % (sourceDict[item.url]==1))
+    print ('Canonicalized URL unique : %s\n' % (normalDict.has_key(item.normalized) and normalDict[item.normalized]==1))
   print 'Sorting with \'%s\' successfully.\n' %option
   inputfile.close()
   outputfile.close()
-  readOrderFile.close()
