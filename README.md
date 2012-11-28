@@ -11,7 +11,7 @@ The implemented validator that was designed from excercise 3 (listed breifly
 below) and explained fully in prev_README.md. The implementation to validate
 and compare URLs is done in url.py. The normalizer is done using 
 url_normalize.py, which was written by Nikolia Panov. Much of the url.py
-was also already implemented from previous weeks.
+was also already implemented from previous weeks as well.
 
 I added the validator functionality to  main.py which is to be run
 using the command:
